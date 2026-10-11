@@ -1,0 +1,85 @@
+.work {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Staggered columns. Padding, not transform, so the scroll reveal can own transform. */
+.work li:nth-child(even) {
+  padding-top: clamp(0rem, 6vw, 5rem);
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr auto auto auto auto;
+  gap: 1rem;
+  min-height: clamp(20rem, 34vw, 26rem);
+  height: 100%;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  text-decoration: none;
+  transition:
+    border-color 0.3s,
+    transform 0.5s var(--ease-out);
+}
+
+.card:hover {
+  border-color: var(--white);
+  transform: translateY(-4px);
+}
+
+.card__index,
+.card__year {
+  color: var(--grey-mid);
+}
+
+.card__year {
+  justify-self: end;
+}
+
+.card__title {
+  grid-column: 1 / -1;
+  align-self: end;
+  padding-top: clamp(3rem, 8vw, 6rem);
+  font-size: var(--step-h3);
+}
+
+.card__summary {
+  grid-column: 1 / -1;
+  max-width: 44ch;
+  color: var(--grey-mid);
+}
+
+.card__award {
+  grid-column: 1 / -1;
+  color: var(--white);
+}
+
+.card__tags {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.card__open {
+  grid-column: 1 / -1;
+  color: var(--grey-mid);
+  transition: color 0.2s;
+}
+
+.card:hover .card__open {
+  color: var(--white);
+}
+
+@media (max-width: 760px) {
+  .work {
+    grid-template-columns: 1fr;
+  }
+  .work li:nth-child(even) {
+    padding-top: 0;
+  }
+}

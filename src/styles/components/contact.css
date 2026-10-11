@@ -1,0 +1,85 @@
+.tracker {
+  padding: 0;
+  overflow: hidden;
+}
+
+.tracker__bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1.25rem, 3vw, 2rem);
+  border-bottom: 1px solid var(--glass-edge);
+}
+
+.tracker__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.field--full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  color: var(--grey-mid);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--glass-edge);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--white);
+  font: inherit;
+  transition: border-color 0.2s;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 9rem;
+}
+
+.field :is(input, select, textarea):focus-visible {
+  outline: none;
+  border-color: var(--white);
+}
+
+.field :is(input, textarea)[aria-invalid="true"] {
+  border-color: var(--red);
+}
+
+.tracker__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2rem);
+}
+
+.tracker__status {
+  color: var(--grey-mid);
+  text-transform: none;
+}
+
+.contact__alt {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 620px) {
+  .tracker__grid {
+    grid-template-columns: 1fr;
+  }
+}

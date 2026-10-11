@@ -1,0 +1,522 @@
+/* ==========================================================================
+   Tokens
+   ========================================================================== */
+:root {
+  /* Strict black and white; red is the only accent. */
+  --black: #000000;
+  --ink: #0a0a0a;
+  --white: #ffffff;
+  --grey-mid: #d0d0d0; /* secondary text: near-white, not grey */
+  --glass-fill: rgba(0, 0, 0, 0.35); /* black glass, not grey */
+  --glass-fill-strong: rgba(0, 0, 0, 0.7); /* under body copy, for contrast */
+  --glass-edge: rgba(255, 255, 255, 0.32); /* crisp white hairline edges */
+  --red: #ff2a2a;
+
+  /* --font-grotesk-face / --font-mono-face are set by next/font in layout.tsx */
+  --font-mono: var(--font-mono-face), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: var(--font-grotesk-face), "Helvetica Neue", Arial, sans-serif;
+
+  --step-hero: clamp(3rem, 10vw, 9rem);
+  --step-h2: clamp(2.25rem, 5.5vw, 4.5rem);
+  --step-h3: clamp(1.5rem, 2.6vw, 2.25rem);
+
+  --radius: 24px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --max: 1240px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-color: var(--red);
+}
+
+:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--red);
+  color: var(--white);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+
+.muted {
+  color: var(--grey-mid);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container {
+  width: min(100% - 2 * var(--gutter), var(--max));
+  margin-inline: auto;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* ==========================================================================
+   Living backdrop: drifting blobs + giant outlined type + grain
+   ========================================================================== */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--black);
+}
+
+.blob {
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 62%);
+  will-change: transform;
+}
+
+.blob--a {
+  top: -20vmax;
+  left: -15vmax;
+  animation: drift-a 38s ease-in-out infinite alternate;
+}
+.blob--b {
+  bottom: -25vmax;
+  right: -20vmax;
+  width: 70vmax;
+  height: 70vmax;
+  animation: drift-b 46s ease-in-out infinite alternate;
+}
+.blob--c {
+  top: 30%;
+  left: 40%;
+  width: 35vmax;
+  height: 35vmax;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 62%);
+  animation: drift-c 30s ease-in-out infinite alternate;
+}
+
+@keyframes drift-a {
+  to { transform: translate3d(30vw, 25vh, 0) scale(1.15); }
+}
+@keyframes drift-b {
+  to { transform: translate3d(-35vw, -30vh, 0) scale(0.9); }
+}
+@keyframes drift-c {
+  to { transform: translate3d(-30vw, 20vh, 0) scale(1.3); }
+}
+
+.outline-type {
+  position: absolute;
+  left: 0;
+  white-space: nowrap;
+  font-weight: 700;
+  font-size: clamp(10rem, 32vw, 30rem);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.22);
+  will-change: transform;
+}
+.outline-type--1 {
+  top: 6vh;
+  animation: marquee 120s linear infinite;
+}
+.outline-type--2 {
+  bottom: 2vh;
+  animation: marquee 150s linear infinite reverse;
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.2 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ==========================================================================
+   Glass
+   The blur lives on ::before so a refraction filter can be layered on top in
+   Chromium without distorting the text. Safari/Firefox get the plain blur.
+   ========================================================================== */
+.glass {
+  position: relative;
+  isolation: isolate;
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  backdrop-filter: blur(20px) saturate(140%);
+}
+
+/* Sheen along the top edge */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0) 30%);
+}
+
+.glass--strong {
+  background: var(--glass-fill-strong);
+}
+
+html.liquid .glass--liquid::before {
+  -webkit-backdrop-filter: blur(14px) saturate(150%) url(#liquid);
+  backdrop-filter: blur(14px) saturate(150%) url(#liquid);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: rgba(0, 0, 0, 0.92);
+  }
+}
+
+/* ==========================================================================
+   Glitch text (slow, irregular; never more than ~2 shifts per second)
+   ========================================================================== */
+.glitch {
+  position: relative;
+}
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.glitch::before {
+  color: var(--red);
+  transform: translateX(2px);
+  clip-path: inset(0 0 60% 0);
+  animation: slice-a 2.5s steps(1) infinite;
+}
+.glitch::after {
+  color: var(--white);
+  transform: translateX(-2px);
+  clip-path: inset(55% 0 0 0);
+  animation: slice-b 3.2s steps(1) infinite reverse;
+}
+
+@keyframes slice-a {
+  0% { clip-path: inset(0 0 60% 0); transform: translateX(2px); }
+  22% { clip-path: inset(30% 0 45% 0); transform: translateX(-3px); }
+  47% { clip-path: inset(70% 0 5% 0); transform: translateX(1px); }
+  71% { clip-path: inset(10% 0 80% 0); transform: translateX(4px); }
+  88% { clip-path: inset(50% 0 30% 0); transform: translateX(-2px); }
+}
+@keyframes slice-b {
+  0% { clip-path: inset(55% 0 0 0); transform: translateX(-2px); }
+  31% { clip-path: inset(15% 0 70% 0); transform: translateX(3px); }
+  58% { clip-path: inset(80% 0 2% 0); transform: translateX(-1px); }
+  79% { clip-path: inset(40% 0 40% 0); transform: translateX(2px); }
+}
+
+/* One-shot hover glitch for cards (0.5s, then settles) */
+.is-glitching .glitch-once {
+  animation: glitch-once 0.5s steps(1) 1;
+}
+.glitch-once {
+  position: relative;
+}
+.is-glitching .glitch-once::before,
+.is-glitching .glitch-once::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.is-glitching .glitch-once::before {
+  color: var(--red);
+  animation: glitch-once-a 0.5s steps(1) 1 forwards;
+}
+.is-glitching .glitch-once::after {
+  animation: glitch-once-b 0.5s steps(1) 1 forwards;
+}
+
+@keyframes glitch-once {
+  0% { transform: translateX(0); }
+  30% { transform: translateX(-2px); }
+  60% { transform: translateX(1px); }
+  100% { transform: none; }
+}
+@keyframes glitch-once-a {
+  0% { clip-path: inset(0 0 65% 0); transform: translateX(3px); opacity: 1; }
+  50% { clip-path: inset(60% 0 10% 0); transform: translateX(-3px); }
+  100% { opacity: 0; }
+}
+@keyframes glitch-once-b {
+  0% { clip-path: inset(45% 0 30% 0); transform: translateX(-3px); opacity: 1; }
+  50% { clip-path: inset(10% 0 75% 0); transform: translateX(2px); }
+  100% { opacity: 0; }
+}
+
+/* ==========================================================================
+   Custom cursor
+   ========================================================================== */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--red);
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    width 0.25s var(--ease-out),
+    height 0.25s var(--ease-out),
+    margin 0.25s var(--ease-out),
+    background-color 0.25s,
+    border-color 0.25s,
+    opacity 0.2s;
+  border: 1.5px solid transparent;
+}
+
+.cursor.is-visible {
+  opacity: 1;
+}
+
+.cursor.is-hover {
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  background: transparent;
+  border-color: var(--red);
+}
+
+/* ==========================================================================
+   Shared section styles
+   ========================================================================== */
+.section {
+  padding-block: clamp(5rem, 14vw, 10rem);
+}
+
+.section-head {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.section-head h2 {
+  font-size: var(--step-h2);
+}
+
+.section-head .label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--grey-mid);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+
+.section-head p {
+  max-width: 52ch;
+  color: var(--grey-mid);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  color: var(--grey-mid);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.4rem;
+  border: 1px solid var(--white);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--white);
+  font: 500 1rem/1 var(--font-sans);
+  text-decoration: none;
+  transition:
+    color 0.25s,
+    border-color 0.25s,
+    background-color 0.25s,
+    transform 0.25s var(--ease-out);
+}
+
+/* Black and white: hover inverts */
+.btn:hover {
+  background: var(--white);
+  color: var(--black);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn--red {
+  border-color: var(--red);
+  background: var(--red);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.btn--red:hover {
+  border-color: #ff4a4a;
+  background: #ff4a4a;
+}
+
+/* ==========================================================================
+   Intro gating (class set pre-paint by an inline script in <head>)
+   ========================================================================== */
+.intro {
+  display: none;
+}
+
+html.intro-on .intro {
+  display: flex;
+}
+
+html.intro-on .site,
+html.intro-on .backdrop > * {
+  opacity: 0;
+}
+
+html.intro-on body {
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Reduced motion: static "repaired" site
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .glitch::before,
+  .glitch::after {
+    display: none;
+  }
+}

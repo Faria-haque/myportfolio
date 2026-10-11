@@ -1,0 +1,133 @@
+/* Case study */
+.case {
+  padding-block: 8rem 6rem;
+}
+
+.case__back {
+  display: inline-block;
+  margin-bottom: 3rem;
+  color: var(--grey-mid);
+  text-decoration: none;
+}
+
+.case__back:hover {
+  color: var(--white);
+}
+
+.case__head {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.case__title {
+  font-size: clamp(3rem, 9vw, 7.5rem);
+}
+
+.case__summary {
+  max-width: 40ch;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  line-height: 1.35;
+}
+
+.case__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1.5rem;
+  margin: 1rem 0 0;
+  padding: 1.5rem clamp(1.25rem, 3vw, 2rem);
+}
+
+.case__meta dd {
+  margin: 0.35rem 0 0;
+}
+
+.case__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.case__media {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  margin-bottom: clamp(3rem, 8vw, 6rem);
+}
+
+.case__section {
+  display: grid;
+  grid-template-columns: minmax(10rem, 18rem) 1fr;
+  gap: 1rem 3rem;
+  padding-block: 2.5rem;
+  border-top: 1px solid var(--glass-edge);
+}
+
+.case__section h2 {
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.case__section p,
+.case__section ol {
+  max-width: 62ch;
+  margin: 0;
+}
+
+.case__section ol {
+  padding-left: 1.2rem;
+}
+
+.case__section li + li {
+  margin-top: 0.6rem;
+}
+
+.case__next {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 4rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  text-decoration: none;
+  transition: border-color 0.3s;
+}
+
+.case__next:hover {
+  border-color: var(--white);
+}
+
+.case__next-title {
+  font-size: var(--step-h3);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+@media (max-width: 680px) {
+  .case__section {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 404 */
+.nf {
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding-block: 7rem 4rem;
+}
+
+.nf__panel {
+  display: grid;
+  justify-items: start;
+  gap: 1.25rem;
+  width: min(100%, 40rem);
+  padding: clamp(2rem, 5vw, 3.5rem);
+}
+
+.nf__title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.nf__copy {
+  max-width: 42ch;
+  margin-bottom: 0.5rem;
+}

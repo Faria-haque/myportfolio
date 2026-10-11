@@ -1,0 +1,118 @@
+.hero {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  min-height: 100svh;
+  padding-block: 7rem 4rem;
+}
+
+.hero__status {
+  position: absolute;
+  top: 6.5rem;
+  right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--grey-mid);
+}
+
+.hero__dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+.hero__dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--red);
+  animation: pulse 2.4s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  70%, 100% { transform: scale(3); opacity: 0; }
+}
+
+.hero__name {
+  font-size: var(--step-hero);
+  line-height: 0.88;
+  letter-spacing: -0.055em;
+  max-width: 12ch;
+}
+
+/* Used while the name is scrambling out of the broken state */
+.hero__name .is-mono {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+.hero__panel {
+  justify-self: end;
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 34rem);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.hero__role {
+  color: var(--grey-mid);
+}
+
+.hero__pos {
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+}
+
+.hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+.hero__link {
+  color: var(--grey-mid);
+  font-size: 0.9375rem;
+  transition: color 0.2s;
+}
+
+.hero__link:hover {
+  color: var(--white);
+}
+
+/* Name-only mode */
+.hero--minimal {
+  justify-items: center;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  padding-block: 4rem;
+  text-align: center;
+}
+
+.hero--minimal .hero__name {
+  max-width: none;
+}
+
+.hero__tagline {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2.2vw, 1.5rem);
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 720px) {
+  .hero__status {
+    position: static;
+    justify-self: start;
+  }
+  .hero__panel {
+    justify-self: stretch;
+  }
+}

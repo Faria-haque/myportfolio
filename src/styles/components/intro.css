@@ -1,0 +1,140 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.5rem;
+  padding: var(--gutter);
+  font-family: var(--font-mono);
+  font-size: clamp(0.875rem, 1.6vw, 1.125rem);
+  color: var(--white);
+}
+
+/* The black curtain; faded out during the repair via --curtain */
+.intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--black);
+  opacity: var(--curtain, 1);
+}
+
+html.intro-repairing .intro {
+  display: flex;
+  pointer-events: none;
+}
+
+.intro__log {
+  max-width: 60ch;
+  margin-inline: auto;
+  width: 100%;
+  line-height: 1.9;
+}
+
+.intro__line {
+  min-height: 1.9em;
+  white-space: pre-wrap;
+}
+
+.intro__line--error {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.intro__caret {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.15em;
+  margin-left: 2px;
+  vertical-align: -0.2em;
+  background: var(--red);
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  50% { opacity: 0; }
+}
+
+.intro__loader {
+  width: 100%;
+  max-width: 60ch;
+  margin-inline: auto;
+  opacity: 0;
+}
+
+.intro__bar {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.intro__fill {
+  height: 100%;
+  background: var(--white);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.intro__meta {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.9rem;
+  font-size: 0.8125rem;
+  color: var(--grey-mid);
+}
+
+.intro__pct {
+  min-width: 3.5ch;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+}
+
+.intro__fix {
+  align-self: center;
+  padding: 0.85rem 1.5rem;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  background: var(--glass-fill);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  color: var(--white);
+  font: 500 0.9375rem/1 var(--font-mono);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+.intro__fix:hover {
+  border-color: var(--red);
+  background: rgba(255, 42, 42, 0.12);
+}
+
+.skip-intro {
+  position: fixed;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  z-index: 101;
+  display: none;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--glass-edge);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--grey-mid);
+  font: 400 0.8125rem/1 var(--font-mono);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+html.intro-on .skip-intro,
+html.intro-repairing .skip-intro {
+  display: block;
+}
+
+.skip-intro:hover,
+.skip-intro:focus-visible {
+  color: var(--white);
+  border-color: var(--white);
+}
